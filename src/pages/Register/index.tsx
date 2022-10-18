@@ -4,23 +4,15 @@ import { StyledForm } from "./styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
 
-interface IForm {
-  avatar: string;
-  fullName: string;
-  password: string;
-  confirmPassword: string;
-  email: string;
-};
-
 const RegisterPage: React.FC = () => {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<IRegisterForm>();
 
-  const onSubmitt: SubmitHandler<IForm> = (data) => console.log(data);
+  const onSubmitt: SubmitHandler<IRegisterForm> = (data) => console.log(data);
 
   useEffect(() => {
     register("avatar", { required: true })

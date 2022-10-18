@@ -4,20 +4,15 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-interface IForm {
-  password: string;
-  email: string;
-};
-
 const LoginPage: React.FC = () => {
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<IForm>();
+  } = useForm<ILoginForm>();
 
-  const onSubmitt: SubmitHandler<IForm> = (data) => console.log(data);
+  const onSubmitt: SubmitHandler<ILoginForm> = (data) => console.log(data);
 
   useEffect(() => {
     register("email", { required: true })
