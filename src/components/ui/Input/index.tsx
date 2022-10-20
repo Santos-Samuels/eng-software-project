@@ -1,14 +1,19 @@
-import { StyledInput } from "./styles";
+import { StyledDiv } from "./styles";
 
 interface IProps extends React.ComponentPropsWithoutRef<"input"> {
   label?: string;
+  placeholder: string;
+  icon?: React.ReactNode;
   isError?: boolean;
 }
 
-const Input: React.FC<IProps> = ({ label, isError, ...rest }) => {
+const Input: React.FC<IProps> = ({ label, placeholder, icon, isError, ...rest }) => {
   return <>
     <label htmlFor="">{label}</label>
-    <StyledInput isError={isError ? isError : false} { ...rest } />
+    <StyledDiv isError={isError}>
+      <input placeholder={placeholder} { ...rest } />
+      {icon}
+    </StyledDiv>
   </>;
 }
 

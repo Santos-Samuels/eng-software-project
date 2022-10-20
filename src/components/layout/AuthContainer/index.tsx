@@ -1,8 +1,18 @@
 import { PropsWithChildren } from "react";
 import { StyledMain } from "./styles";
 
-const AuthContainer: React.FC<PropsWithChildren> = ({ children }) => {
-  return <StyledMain>{children}</StyledMain>;
+interface IProps {
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+const AuthContainer: React.FC<IProps> = ({ children, icon }) => {
+  return (
+    <StyledMain>
+      {icon && <span>{icon}</span>}
+      {children}
+    </StyledMain>
+  );
 };
 
 export default AuthContainer;
