@@ -1,19 +1,35 @@
-import { AuthContainer, Button, Form, Input } from "@components/index";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { AuthContainer, Button, ErrorMessage, Form, Input } from "@components/index";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEyeSlash } from "react-icons/fa";
 import { HiUser } from "react-icons/hi2";
+import { login } from "@shared/services";
 
 const LoginPage: React.FC = () => {
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<ILoginForm>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<ILoginForm> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
+    setIsLoading(true);
+    try {
+      await login(data);
+      reset();
+      navigate("/");
+    } catch (error) {
+      setErrorMessage("Email ou senha incorretos!");
+    }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     register("email", { required: true });
@@ -30,6 +46,7 @@ const LoginPage: React.FC = () => {
             icon={<HiUser />}
             onChange={async (e) => setValue("email", e.target.value)}
             isError={errors.email && true}
+            errorMessage={"Campo obrigatório!"}
           />
           <Input
             type="password"
@@ -37,8 +54,10 @@ const LoginPage: React.FC = () => {
             icon={<FaEyeSlash size={20} />}
             onChange={async (e) => setValue("password", e.target.value)}
             isError={errors.password && true}
+            errorMessage={"Campo obrigatório!"}
           />
-          <Button>Entrar</Button>
+          {errorMessage && <ErrorMessage withBackgroung message={errorMessage} />}
+          <Button isLoad={isLoading}>Entrar</Button>
 
           <Link to="/register">
             não tem uma conta? <b>cadastre-se</b>

@@ -14,8 +14,9 @@ interface ILoginForm {
 };
 
 interface IRegisterForm {
-  avatar: string;
-  fullName: string;
+  file: string;
+  // file: Blob | MediaSource;
+  name: string;
   password: string;
   confirmPassword: string;
   email: string;

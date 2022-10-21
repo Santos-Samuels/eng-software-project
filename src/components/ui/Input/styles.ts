@@ -9,14 +9,16 @@ export const StyledDiv = styled.div<{ isError?: boolean }>`
 
   & input {
     font-weight: 400;
-  font-size: 18px;
-  color: ${({ isError, theme }) => isError ? theme.errorColor : theme.textColor};
-  border: none;
-  padding: 8px 0;
+    font-size: 18px;
+    color: ${({ isError, theme }) => isError ? theme.errorColor : theme.textColor};
+    border: none;
+    padding: 8px 0;
   }
 
-  & input:focus {
+  & input:focus, 
+  & svg {
     outline: none;
+    color: ${({ theme }) => theme.secondaryColor};
   }
 
   & input::placeholder,

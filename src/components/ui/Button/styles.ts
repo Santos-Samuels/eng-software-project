@@ -12,8 +12,16 @@ export const StyledButton = styled.button`
   text-transform: uppercase;
   background-color: ${({ theme }) => theme.primaryColor};
   transition: all ease 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
   &:hover {
     box-shadow: 0 0 8px ${({ theme }) => theme.primaryColor};
+  }
+
+  &:disabled {
+    opacity: 0.7;
   }
 `;

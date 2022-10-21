@@ -1,3 +1,4 @@
+import ErrorMessage from "../ErrorMessage";
 import { StyledDiv } from "./styles";
 
 interface IProps extends React.ComponentPropsWithoutRef<"input"> {
@@ -5,16 +6,26 @@ interface IProps extends React.ComponentPropsWithoutRef<"input"> {
   placeholder: string;
   icon?: React.ReactNode;
   isError?: boolean;
+  errorMessage?: string;
 }
 
-const Input: React.FC<IProps> = ({ label, placeholder, icon, isError, ...rest }) => {
-  return <>
-    <label htmlFor="">{label}</label>
-    <StyledDiv isError={isError}>
-      <input placeholder={placeholder} { ...rest } />
-      {icon}
-    </StyledDiv>
-  </>;
-}
+const Input: React.FC<IProps> = ({
+  label,
+  placeholder,
+  icon,
+  isError,
+  errorMessage,
+  ...rest
+}) => {
+  return (
+    <article>
+      <StyledDiv isError={isError}>
+        <input placeholder={placeholder} {...rest} />
+        {icon}
+      </StyledDiv>
+      {isError && errorMessage && <ErrorMessage message={errorMessage!} />}
+    </article>
+  );
+};
 
 export default Input;
