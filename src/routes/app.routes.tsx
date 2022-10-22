@@ -8,13 +8,13 @@ const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/products/:id" element={<ProductPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cart" element={<CartPage />} />
 
         <Route element={<PrivateRoutes />}>
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/products/:id" element={<ProductPage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/" element={<HomePage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

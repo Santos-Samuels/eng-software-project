@@ -23,7 +23,8 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      await login(data);
+      const response = await login(data);
+      localStorage.setItem('TOKEN', response.data.token!)
       reset();
       navigate("/");
     } catch (error) {

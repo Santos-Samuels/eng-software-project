@@ -87,7 +87,7 @@ const RegisterPage: React.FC = () => {
           errorMessage={errors.confirmPassword?.message}
         />
 
-        <img src={image} alt="" />
+        {/* <img src={image} alt="" /> */}
         <Input
           type="file"
           icon={<FiUpload />}

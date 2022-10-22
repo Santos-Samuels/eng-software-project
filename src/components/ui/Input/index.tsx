@@ -38,7 +38,7 @@ const Input: React.FC<IProps> = ({
     <article>
       <label htmlFor={id}>{label}</label>
       <StyledDiv isError={isError}>
-        <input placeholder={placeholder} {...rest} id={id} />
+        <input placeholder={placeholder} {...rest} id={id} type={type} />
         {icon}
       </StyledDiv>
       {isError && errorMessage && <ErrorMessage message={errorMessage!} />}

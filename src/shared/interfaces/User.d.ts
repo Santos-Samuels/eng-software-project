@@ -1,6 +1,6 @@
 interface User {
   id: string;
-  avatar: string;
+  avatar?: string;
   name: string;
   email: string;
   password: string;
