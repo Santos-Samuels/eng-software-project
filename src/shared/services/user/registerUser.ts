@@ -1,6 +1,6 @@
 import api from "../api"
 
-export const registerUser = (user: IRegisterForm) => { 
+export const registerUser = (user: FormData) => { 
   try {
     const response = api.post<User>('/user/register', user)
     return response

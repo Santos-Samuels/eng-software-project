@@ -1,12 +1,14 @@
 import ErrorMessage from "../ErrorMessage";
-import { StyledDiv } from "./styles";
+import { StyledDiv, StyledArticle } from "./styles";
 
 interface IProps extends React.ComponentPropsWithoutRef<"input"> {
   label?: string;
-  placeholder: string;
+  placeholder?: string;
   icon?: React.ReactNode;
   isError?: boolean;
   errorMessage?: string;
+  id?: string;
+  type?: string;
 }
 
 const Input: React.FC<IProps> = ({
@@ -15,12 +17,28 @@ const Input: React.FC<IProps> = ({
   icon,
   isError,
   errorMessage,
+  id,
+  type,
   ...rest
 }) => {
+  if (type === "file") {
+    return (
+      <StyledArticle isError={isError}>
+        <div>
+          <label htmlFor={id}>{label}</label>
+          <input type="file" {...rest} id={id} />
+          {icon}
+        </div>
+        {isError && errorMessage && <ErrorMessage message={errorMessage!} />}
+      </StyledArticle>
+    );
+  }
+
   return (
     <article>
+      <label htmlFor={id}>{label}</label>
       <StyledDiv isError={isError}>
-        <input placeholder={placeholder} {...rest} />
+        <input placeholder={placeholder} {...rest} id={id} />
         {icon}
       </StyledDiv>
       {isError && errorMessage && <ErrorMessage message={errorMessage!} />}

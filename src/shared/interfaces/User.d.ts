@@ -14,8 +14,7 @@ interface ILoginForm {
 };
 
 interface IRegisterForm {
-  file: string;
-  // file: Blob | MediaSource;
+  file: File | FormData;
   name: string;
   password: string;
   confirmPassword: string;

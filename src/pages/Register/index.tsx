@@ -1,11 +1,19 @@
-import { AuthContainer, Button, ErrorMessage, Form, Input } from "@components/index";
+import {
+  AuthContainer,
+  Button,
+  ErrorMessage,
+  Form,
+  Input,
+} from "@components/index";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { HiMail } from "react-icons/hi";
 import { HiUser, HiUserPlus } from "react-icons/hi2";
+import { FiUpload } from "react-icons/fi";
 import { registerUser } from "@shared/services";
+import api from "@src/shared/services/api";
 
 const RegisterPage: React.FC = () => {
   const {
@@ -21,9 +29,13 @@ const RegisterPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<IRegisterForm> = async (data) => {
     setIsLoading(true);
+    setErrorMessage("");
     try {
-      await registerUser({...data, file: ""});
-      reset()
+      const formData = new FormData();
+      Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
+
+      await registerUser(formData);
+      reset();
       navigate("/login");
     } catch (error) {
       setErrorMessage("Já existe um usuário com esse email!");
@@ -32,10 +44,11 @@ const RegisterPage: React.FC = () => {
   };
 
   useEffect(() => {
-    register("name", { required: true });
-    register("email", { required: true });
-    register("password", { required: true });
-    register("confirmPassword", { required: true });
+    register("file", { required: false });
+    register("name", { required: "Campo obrigatório!" });
+    register("email", { required: "Campo obrigatório!" });
+    register("password", { required: "Campo obrigatório!" });
+    register("confirmPassword", { required: "Campo obrigatório!" });
   }, []);
 
   return (
@@ -47,7 +60,7 @@ const RegisterPage: React.FC = () => {
           icon={<HiUser />}
           onChange={async (e) => setValue("name", e.target.value)}
           isError={errors.name && true}
-          errorMessage={"Campo obrigatório!"}
+          errorMessage={errors.name?.message}
         />
         <Input
           type="email"
@@ -55,7 +68,7 @@ const RegisterPage: React.FC = () => {
           icon={<HiMail size={20} />}
           onChange={async (e) => setValue("email", e.target.value)}
           isError={errors.email && true}
-          errorMessage={"Campo obrigatório!"}
+          errorMessage={errors.email?.message}
         />
         <Input
           type="password"
@@ -63,7 +76,7 @@ const RegisterPage: React.FC = () => {
           icon={<FaEyeSlash size={20} />}
           onChange={async (e) => setValue("password", e.target.value)}
           isError={errors.password && true}
-          errorMessage={"Campo obrigatório!"}
+          errorMessage={errors.password?.message}
         />
         <Input
           type="password"
@@ -71,7 +84,19 @@ const RegisterPage: React.FC = () => {
           icon={<FaEyeSlash size={20} />}
           onChange={async (e) => setValue("confirmPassword", e.target.value)}
           isError={errors.confirmPassword && true}
-          errorMessage={"Campo obrigatório!"}
+          errorMessage={errors.confirmPassword?.message}
+        />
+
+        <img src={image} alt="" />
+        <Input
+          type="file"
+          icon={<FiUpload />}
+          id="file"
+          label="Enviar Foto do Perfil"
+          accept="image/*"
+          onChange={async (e) => setValue("file", e.target.files![0])}
+          isError={errors.file && true}
+          errorMessage={errors.email?.message}
         />
         {errorMessage && <ErrorMessage withBackgroung message={errorMessage} />}
         <Button type="submit" isLoad={isLoading}>

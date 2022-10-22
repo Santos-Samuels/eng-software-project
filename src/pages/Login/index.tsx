@@ -21,6 +21,7 @@ const LoginPage: React.FC = () => {
 
   const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
     setIsLoading(true);
+    setErrorMessage("");
     try {
       await login(data);
       reset();
@@ -32,8 +33,8 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
-    register("email", { required: true });
-    register("password", { required: true });
+    register("email", { required: "Campo obrigatório!" });
+    register("password", { required: "Campo obrigatório!" });
   }, []);
 
   return (
@@ -46,7 +47,7 @@ const LoginPage: React.FC = () => {
             icon={<HiUser />}
             onChange={async (e) => setValue("email", e.target.value)}
             isError={errors.email && true}
-            errorMessage={"Campo obrigatório!"}
+            errorMessage={errors.email?.message}
           />
           <Input
             type="password"
@@ -54,7 +55,7 @@ const LoginPage: React.FC = () => {
             icon={<FaEyeSlash size={20} />}
             onChange={async (e) => setValue("password", e.target.value)}
             isError={errors.password && true}
-            errorMessage={"Campo obrigatório!"}
+            errorMessage={errors.password?.message}
           />
           {errorMessage && <ErrorMessage withBackgroung message={errorMessage} />}
           <Button isLoad={isLoading}>Entrar</Button>
