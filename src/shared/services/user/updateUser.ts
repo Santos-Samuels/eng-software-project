@@ -1,10 +1,5 @@
 import api from "../api"
 
-export const updateUser = (user: IRegisterForm, userId: string) => { 
-  try {
-    const response = api.put<User>(`/user/update/${userId}`, user)
-    return response
-  } catch (error) {
-    return error
-  }
+export const updateUser = async (user: IRegisterForm, userId: string) => { 
+  return api.put<User>(`/user/update/${userId}`, user)
 }
