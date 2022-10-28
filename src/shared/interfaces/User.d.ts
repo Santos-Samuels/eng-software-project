@@ -1,4 +1,4 @@
-interface User {
+interface IUser {
   id: string;
   avatar?: string;
   name: string;

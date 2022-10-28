@@ -25,6 +25,7 @@ const LoginPage: React.FC = () => {
     try {
       const response = await login(data);
       localStorage.setItem('TOKEN', response.data.token!)
+      localStorage.setItem('userId', response.data.id!)
       reset();
       navigate("/");
     } catch (error) {

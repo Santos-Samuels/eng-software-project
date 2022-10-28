@@ -1,5 +1,5 @@
 import api from "../api";
 
 export const deleteUser = async (userId: string) => {
-  return api.delete<User>(`/user/delete/${userId}`);
+  return api.delete<IUser>(`/user/delete/${userId}`);
 };
