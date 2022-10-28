@@ -34,8 +34,8 @@ const LoginPage: React.FC = () => {
   };
 
   useEffect(() => {
-    register("email", { required: "Campo obrigatório!" });
-    register("password", { required: "Campo obrigatório!" });
+    register("email", { required: "Informe o Email!" });
+    register("password", { required: "Informe a Senha!" });
   }, []);
 
   return (

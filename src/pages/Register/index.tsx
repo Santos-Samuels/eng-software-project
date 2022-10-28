@@ -13,7 +13,6 @@ import { HiMail } from "react-icons/hi";
 import { HiUser, HiUserPlus } from "react-icons/hi2";
 import { FiUpload } from "react-icons/fi";
 import { registerUser } from "@shared/services";
-import api from "@src/shared/services/api";
 
 const RegisterPage: React.FC = () => {
   const {
@@ -30,6 +29,12 @@ const RegisterPage: React.FC = () => {
   const onSubmit: SubmitHandler<IRegisterForm> = async (data) => {
     setIsLoading(true);
     setErrorMessage("");
+    
+    if(data.password !== data.confirmPassword) {
+      setErrorMessage("As senhas não coincidem!");
+      return
+    }
+    
     try {
       const formData = new FormData();
       Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
@@ -45,10 +50,10 @@ const RegisterPage: React.FC = () => {
 
   useEffect(() => {
     register("file", { required: false });
-    register("name", { required: "Campo obrigatório!" });
-    register("email", { required: "Campo obrigatório!" });
-    register("password", { required: "Campo obrigatório!" });
-    register("confirmPassword", { required: "Campo obrigatório!" });
+    register("name", { required: "Informe o Nome Completo!" });
+    register("email", { required: "Informe o Email!" });
+    register("password", { required: "Informe a Senha!" });
+    register("confirmPassword", { required: "Confirme a Senha!" });
   }, []);
 
   return (
@@ -56,6 +61,7 @@ const RegisterPage: React.FC = () => {
       <Form onSubmit={handleSubmit(onSubmit)} title="Cadastrar">
         <Input
           type="text"
+          id="name"
           placeholder="Nome Completo"
           icon={<HiUser />}
           onChange={async (e) => setValue("name", e.target.value)}
@@ -64,6 +70,7 @@ const RegisterPage: React.FC = () => {
         />
         <Input
           type="email"
+          id="email"
           placeholder="E-mail"
           icon={<HiMail size={20} />}
           onChange={async (e) => setValue("email", e.target.value)}
@@ -72,6 +79,7 @@ const RegisterPage: React.FC = () => {
         />
         <Input
           type="password"
+          id="password"
           placeholder="Senha"
           icon={<FaEyeSlash size={20} />}
           onChange={async (e) => setValue("password", e.target.value)}
@@ -80,18 +88,17 @@ const RegisterPage: React.FC = () => {
         />
         <Input
           type="password"
+          id="confirm-password"
           placeholder="Confirmar Senha"
           icon={<FaEyeSlash size={20} />}
           onChange={async (e) => setValue("confirmPassword", e.target.value)}
           isError={errors.confirmPassword && true}
           errorMessage={errors.confirmPassword?.message}
         />
-
-        {/* <img src={image} alt="" /> */}
         <Input
           type="file"
-          icon={<FiUpload />}
           id="file"
+          icon={<FiUpload />}
           label="Enviar Foto do Perfil"
           accept="image/*"
           onChange={async (e) => setValue("file", e.target.files![0])}
