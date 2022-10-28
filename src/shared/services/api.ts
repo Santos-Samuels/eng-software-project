@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://alert-jade-rooster.cyclic.app/api'
+  baseURL: 'https://zealous-elk-garb.cyclic.app/api'
 })
 
 export default api
