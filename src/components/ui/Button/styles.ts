@@ -1,16 +1,17 @@
 import styled from "styled-components";
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<{
+  feature: "FILL" | "OUTLINE" | "LINK";
+}>`
   border-radius: 10px;
-  padding: 15px;
-  border: 1px solid grey;
+  padding: ${({ feature }) => feature === "FILL" ? "16px" : "10px"};
+  border:${({ feature, theme }) => feature === "OUTLINE" ? `1px solid ${theme.secondaryColor}` : "none"};
   cursor: pointer;
-  border: none;
   font-size: 16px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.highlightColor};
-  text-transform: uppercase;
-  background-color: ${({ theme }) => theme.primaryColor};
+  ${({feature}) => feature !== "LINK" && "font-weight: bold;"}
+  color: ${({ feature, theme }) => feature === "FILL" ? theme.highlightColor : theme.secondaryColor};
+  text-transform: ${({ feature }) => feature === "FILL" ? "uppercase" : "capitalize"};
+  background-color: ${({ feature, theme }) => feature === "FILL" ? theme.primaryColor : theme.highlightColor};
   transition: all ease 0.3s;
   display: flex;
   align-items: center;
@@ -18,7 +19,7 @@ export const StyledButton = styled.button`
   gap: 10px;
 
   &:hover {
-    box-shadow: 0 0 8px ${({ theme }) => theme.primaryColor};
+    ${({ feature, theme }) => feature === "FILL" && `box-shadow: 0 0 8px ${theme.primaryColor};`}
   }
 
   &:disabled {

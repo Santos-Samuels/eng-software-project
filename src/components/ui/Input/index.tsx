@@ -25,9 +25,8 @@ const Input: React.FC<IProps> = ({
     return (
       <StyledArticle isError={isError}>
         <div>
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id}>{label} {icon}</label>
           <input type="file" {...rest} id={id} />
-          {icon}
         </div>
         {isError && errorMessage && <ErrorMessage message={errorMessage!} />}
       </StyledArticle>
