@@ -10,12 +10,18 @@ import { StyledActions, StyledAvatar, StyledSection } from "./styles";
 const AccountPage: React.FC = () => {
   const { getUserById, user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [uploadedAvatar, setUploadedAvatar] = useState<Blob | MediaSource | null>(null)
 
   const getData = async () => {
     const userId = localStorage.getItem("userId");
     await getUserById(userId!);
     setIsLoading(false);
   };
+
+  const setImageToUpload = () => {
+    const objectUrl = URL.createObjectURL(uploadedAvatar!)
+    return objectUrl
+  }
 
   useEffect(() => {
     getData();
@@ -28,7 +34,7 @@ const AccountPage: React.FC = () => {
     <>
       <Collapsible title="Perfil" icon={<HiUser />}>
         <StyledSection>
-          <div>
+          {uploadedAvatar ? <div><img src={setImageToUpload()} /></div> : <div>
             {user?.avatar ? (
               <img src={user?.avatar} />
             ) : (
@@ -36,7 +42,7 @@ const AccountPage: React.FC = () => {
                 <HiUser />
               </StyledAvatar>
             )}
-          </div>
+          </div>}
 
           <div>
             <article>
@@ -53,16 +59,16 @@ const AccountPage: React.FC = () => {
               <p>Senha:</p>
               <Button feature="OUTLINE">Trocar</Button>
             </article>
-            
+
             <Input
               type="file"
               id="file"
               icon={<FiUpload />}
               label="Trocar Foto do Perfil"
               accept="image/*"
-              // onChange={async (e) => setValue("file", e.target.files![0])}
-              // isError={errors.file && true}
-              // errorMessage={errors.email?.message}
+              onChange={async (e) => setUploadedAvatar(e.target.files![0])}
+            // isError={errors.file && true}
+            // errorMessage={errors.email?.message}
             />
           </div>
         </StyledSection>
