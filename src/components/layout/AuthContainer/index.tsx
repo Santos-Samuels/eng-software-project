@@ -1,15 +1,19 @@
-import { PropsWithChildren } from "react";
 import { StyledMain } from "./styles";
 
 interface IProps {
-  icon?: React.ReactNode;
   children: React.ReactNode;
+  icon: React.ReactNode;
+  imageUrl?: string;
 }
 
-const AuthContainer: React.FC<IProps> = ({ children, icon }) => {
+const AuthContainer: React.FC<IProps> = ({ children, icon, imageUrl }) => {
   return (
     <StyledMain>
-      {icon && <span>{icon}</span>}
+      {imageUrl ? (
+        <img src={imageUrl} alt="Imagem de perfil" />
+      ) : (
+        <span>{icon}</span>
+      )}
       {children}
     </StyledMain>
   );

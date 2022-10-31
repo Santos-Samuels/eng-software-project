@@ -2,7 +2,7 @@ import { AuthContainer, Button, ErrorMessage, Form, Input } from "@components/in
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { HiUser } from "react-icons/hi2";
 import { login } from "@shared/services";
 
@@ -55,6 +55,7 @@ const LoginPage: React.FC = () => {
             type="password"
             placeholder="Senha"
             icon={<FaEyeSlash size={20} />}
+            altIcon={<FaEye size={20} />}
             onChange={async (e) => setValue("password", e.target.value)}
             isError={errors.password && true}
             errorMessage={errors.password?.message}

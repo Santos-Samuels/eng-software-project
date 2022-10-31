@@ -18,13 +18,24 @@ export const StyledMain = styled.main`
     background-color: #BC5C2C1A;
     color: ${({ theme }) => theme.primaryColor};
     z-index: 2;
-    padding: 20px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     margin-bottom: -40px;
+    display: flex;
   }
 
   & span svg {
-    width: 32px;
-    height: 32px;
+    margin: auto;
+    font-size: 50px;
+  }
+
+  & img {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 100%;
+    margin-bottom: -40px;
+    z-index: 2;
   }
 `
