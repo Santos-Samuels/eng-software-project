@@ -44,7 +44,7 @@ const Input: React.FC<IProps> = ({
   }
 
   return (
-    <article>
+    <div>
       <label htmlFor={id}>{label}</label>
       <StyledDiv isError={isError}>
         <input
@@ -63,7 +63,7 @@ const Input: React.FC<IProps> = ({
         )}
       </StyledDiv>
       {isError && errorMessage && <ErrorMessage message={errorMessage!} />}
-    </article>
+    </div>
   );
 };
 

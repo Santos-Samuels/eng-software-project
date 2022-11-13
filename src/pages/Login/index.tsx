@@ -1,6 +1,6 @@
 import { FormContainer, Button, ErrorMessage, Form, Input } from "@components/index";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { HiUser } from "react-icons/hi2";
@@ -10,9 +10,7 @@ const LoginPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
-    setError,
     formState: { errors },
   } = useForm<ILoginForm>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,11 +32,6 @@ const LoginPage: React.FC = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    register("email", { required: "Informe o Email!" });
-    register("password", { required: "Informe a Senha!" });
-  }, []);
-
   return (
     <FormContainer icon={<HiUser />}>
       <Form onSubmit={handleSubmit(onSubmit)} title="Entrar">
@@ -47,7 +40,7 @@ const LoginPage: React.FC = () => {
             type="email"
             placeholder="E-mail"
             icon={<HiUser />}
-            onChange={async (e) => setValue("email", e.target.value)}
+            formRegister={register("email", { required: "Informe o Email!" })}
             isError={errors.email && true}
             errorMessage={errors.email?.message}
           />
@@ -56,7 +49,7 @@ const LoginPage: React.FC = () => {
             placeholder="Senha"
             icon={<FaEyeSlash size={20} />}
             altIcon={<FaEye size={20} />}
-            onChange={async (e) => setValue("password", e.target.value)}
+            formRegister={register("password", { required: "Informe a Senha!" })}
             isError={errors.password && true}
             errorMessage={errors.password?.message}
           />

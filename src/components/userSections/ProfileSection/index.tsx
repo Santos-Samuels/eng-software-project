@@ -1,11 +1,18 @@
 import { Button, Input, Collapsible } from "@src/components";
 import { formatImageToPreview } from "@src/shared/utils/formatImageToPreview";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { HiUser } from "react-icons/hi2";
 import { StyledActions, StyledAvatar, StyledSection } from "../styles";
 
 const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IRegisterForm>();
   const [previewImage, setPreviewImage] = useState<Blob | MediaSource | null>(
     null
   );
@@ -39,6 +46,7 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
             icon={<FiUpload />}
             label="Trocar Foto do Perfil"
             accept="image/*"
+            formRegister={register("file", { required: false })}
             onChange={async (e) => setPreviewImage(e.target.files![0])}
             // isError={errors.file && true}
             // errorMessage={errors.email?.message}

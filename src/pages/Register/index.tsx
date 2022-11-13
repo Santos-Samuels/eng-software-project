@@ -7,7 +7,7 @@ import {
 } from "@components/index";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { HiMail } from "react-icons/hi";
 import { HiUser, HiUserPlus } from "react-icons/hi2";
@@ -19,7 +19,6 @@ const RegisterPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<IRegisterForm>();
@@ -51,14 +50,6 @@ const RegisterPage: React.FC = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    register("file", { required: false });
-    register("name", { required: "Informe o Nome Completo!" });
-    register("email", { required: "Informe o Email!" });
-    register("password", { required: "Informe a Senha!" });
-    register("confirmPassword", { required: "Confirme a Senha!" });
-  }, []);
-
   return (
     <FormContainer
       icon={<HiUserPlus />}
@@ -71,8 +62,8 @@ const RegisterPage: React.FC = () => {
           icon={<FiUpload />}
           label="Enviar Foto do Perfil"
           accept="image/*"
+          formRegister={register("file", { required: false })}
           onChange={async (e) => {
-            setValue("file", e.target.files![0]);
             setPreviewImage(e.target.files![0]);
           }}
           isError={errors.file && true}
@@ -83,7 +74,7 @@ const RegisterPage: React.FC = () => {
           id="name"
           placeholder="Nome Completo"
           icon={<HiUser />}
-          onChange={async (e) => setValue("name", e.target.value)}
+          formRegister={register("name", { required: "Informe o Nome Completo!" })}
           isError={errors.name && true}
           errorMessage={errors.name?.message}
         />
@@ -92,7 +83,7 @@ const RegisterPage: React.FC = () => {
           id="email"
           placeholder="E-mail"
           icon={<HiMail size={20} />}
-          onChange={async (e) => setValue("email", e.target.value)}
+          formRegister={register("email", { required: "Informe o Email!" })}
           isError={errors.email && true}
           errorMessage={errors.email?.message}
         />
@@ -102,7 +93,7 @@ const RegisterPage: React.FC = () => {
           placeholder="Senha"
           icon={<FaEyeSlash size={20} />}
           altIcon={<FaEye size={20} />}
-          onChange={async (e) => setValue("password", e.target.value)}
+          formRegister={register("password", { required: "Informe a Senha!" })}
           isError={errors.password && true}
           errorMessage={errors.password?.message}
         />
@@ -112,7 +103,7 @@ const RegisterPage: React.FC = () => {
           placeholder="Confirmar Senha"
           icon={<FaEyeSlash size={20} />}
           altIcon={<FaEye size={20} />}
-          onChange={async (e) => setValue("confirmPassword", e.target.value)}
+          formRegister={register("confirmPassword", { required: "Confirme a Senha!" })}
           isError={errors.confirmPassword && true}
           errorMessage={errors.confirmPassword?.message}
         />
