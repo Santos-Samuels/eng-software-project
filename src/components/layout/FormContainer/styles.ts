@@ -13,6 +13,7 @@ export const StyledMain = styled.main<{ width: string; height: string }>`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  padding: 10px;
 
   & span {
     background-color: #bc5c2c1a;
@@ -37,5 +38,9 @@ export const StyledMain = styled.main<{ width: string; height: string }>`
     border-radius: 100%;
     margin-bottom: -40px;
     z-index: 2;
+  }
+
+  @media only screen and (min-width: 400px) {
+    padding: 0;
   }
 `;

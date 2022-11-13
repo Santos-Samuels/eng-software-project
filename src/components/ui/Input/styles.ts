@@ -11,6 +11,7 @@ export const StyledDiv = styled.div<{ isError?: boolean }>`
   & input {
     font-weight: 400;
     font-size: 18px;
+    width: 100%;
     color: ${({ theme }) => theme.secondaryColor};
     border: none;
     padding: 8px 0;
@@ -36,14 +37,14 @@ export const StyledArticle = styled.article<{ isError?: boolean }>`
     width: 100%;
     flex-wrap: nowrap;
     border: 1px solid
-    ${({ isError, theme }) => (isError ? theme.errorColor : theme.textColor)};
+      ${({ isError, theme }) => (isError ? theme.errorColor : theme.textColor)};
     color: ${({ isError, theme }) =>
       isError ? theme.errorColor : theme.textColor};
     padding: 6px 15px;
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   & label {
     display: flex;
     justify-content: space-between;

@@ -4,8 +4,9 @@ export const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 50px;
-  margin: 20px 0;
+  margin: 10px;
 
   & > div h2 {
     margin-bottom: 15px;
