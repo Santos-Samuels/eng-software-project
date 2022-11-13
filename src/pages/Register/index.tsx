@@ -1,5 +1,5 @@
 import {
-  AuthContainer,
+  FormContainer,
   Button,
   ErrorMessage,
   Form,
@@ -60,7 +60,7 @@ const RegisterPage: React.FC = () => {
   }, []);
 
   return (
-    <AuthContainer
+    <FormContainer
       icon={<HiUserPlus />}
       imageUrl={previewImage ? formatImageToPreview(previewImage) : ""}
     >
@@ -125,7 +125,7 @@ const RegisterPage: React.FC = () => {
           já tem uma conta? <b>entrar</b>
         </Link>
       </Form>
-    </AuthContainer>
+    </FormContainer>
   );
 };
 

@@ -18,9 +18,12 @@ export const StyledForm = styled.form`
     font-size: 26px;
   }
 
+  & button[type="submit"] {
+    margin-top: 15px;
+  }
+
   & button {
     width: 100%;
-    margin-top: 15px;
   }
 
   & a {

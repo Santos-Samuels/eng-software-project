@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import { StyledDiv, StyledArticle } from "./styles";
 
@@ -11,6 +12,7 @@ interface IProps extends React.ComponentPropsWithoutRef<"input"> {
   errorMessage?: string;
   id?: string;
   type?: string;
+  formRegister: UseFormRegisterReturn;
 }
 
 const Input: React.FC<IProps> = ({
@@ -22,6 +24,7 @@ const Input: React.FC<IProps> = ({
   errorMessage,
   id,
   type,
+  formRegister,
   ...rest
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -33,7 +36,7 @@ const Input: React.FC<IProps> = ({
           <label htmlFor={id}>
             {label} {icon}
           </label>
-          <input type="file" {...rest} id={id} />
+          <input type="file" {...rest} {...formRegister} id={id} />
         </div>
         {isError && errorMessage && <ErrorMessage message={errorMessage!} />}
       </StyledArticle>
@@ -44,9 +47,17 @@ const Input: React.FC<IProps> = ({
     <article>
       <label htmlFor={id}>{label}</label>
       <StyledDiv isError={isError}>
-        <input placeholder={placeholder} {...rest} id={id} type={type === "password" && isPasswordVisible ? "text" : type} />
+        <input
+          placeholder={placeholder}
+          {...rest}
+          {...formRegister}
+          id={id}
+          type={type === "password" && isPasswordVisible ? "text" : type}
+        />
         {type === "password" ? (
-          <div onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? altIcon : icon}</div>
+          <div onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+            {isPasswordVisible ? altIcon : icon}
+          </div>
         ) : (
           icon
         )}

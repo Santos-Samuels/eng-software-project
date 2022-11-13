@@ -6,6 +6,7 @@ import ProductPage from "./Product";
 import ProductsPage from "./Products";
 import RegisterPage from "./Register";
 import AccountPage from "./Account";
+import CreateProductPage from "./CreateProduct";
 
 export {
   HomePage,
@@ -15,5 +16,6 @@ export {
   ProductsPage,
   RegisterPage,
   AccountPage,
-  NotFoundPage
+  NotFoundPage,
+  CreateProductPage
 };

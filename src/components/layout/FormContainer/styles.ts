@@ -1,21 +1,21 @@
 import styled from "styled-components";
 import bgImage from "@src/assets/bg-img.png";
 
-export const StyledMain = styled.main`
-  width: 100vw;
-  height: 100vh;
+export const StyledMain = styled.main<{ width: string; height: string }>`
+  width: ${({ width }) => width ? width : "100vw"};
+  height: ${({ height }) => height ? height : "100vh"};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: #BC5C2C33;
+  background-color: #bc5c2c33;
   background-image: url(${bgImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   & span {
-    background-color: #BC5C2C1A;
+    background-color: #bc5c2c1a;
     color: ${({ theme }) => theme.primaryColor};
     z-index: 2;
     width: 100px;
@@ -38,4 +38,4 @@ export const StyledMain = styled.main`
     margin-bottom: -40px;
     z-index: 2;
   }
-`
+`;

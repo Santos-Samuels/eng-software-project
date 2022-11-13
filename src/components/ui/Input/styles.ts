@@ -31,8 +31,10 @@ export const StyledDiv = styled.div<{ isError?: boolean }>`
 
 export const StyledArticle = styled.article<{ isError?: boolean }>`
   width: 100%;
-  
+
   & div {
+    width: 100%;
+    flex-wrap: nowrap;
     border: 1px solid
     ${({ isError, theme }) => (isError ? theme.errorColor : theme.textColor)};
     color: ${({ isError, theme }) =>
@@ -44,8 +46,8 @@ export const StyledArticle = styled.article<{ isError?: boolean }>`
   
   & label {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    flex-wrap: nowrap;
     gap: 15px;
     cursor: pointer;
     font-weight: 400;

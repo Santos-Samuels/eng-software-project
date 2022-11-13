@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const StyledSection = styled.section`
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 20px;
 
@@ -35,6 +36,10 @@ export const StyledSection = styled.section`
     word-wrap: nowrap;
     color: ${({ theme }) => theme.textColor};
   }
+
+  @media only screen and (min-width: 650px) {
+    flex-direction: row;
+  }
 `;
 
 export const StyledAvatar = styled.div`
@@ -51,13 +56,18 @@ export const StyledAvatar = styled.div`
 
 export const StyledActions = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: max-content;
   gap: 10px;
   margin-top: 15px;
-  
+
   & button {
     width: 200px;
     gap: 5px;
+  }
+
+  @media only screen and (min-width: 650px) {
+    flex-direction: row;
   }
 `;

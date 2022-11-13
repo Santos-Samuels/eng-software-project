@@ -1,4 +1,4 @@
-import { AuthContainer, Button, ErrorMessage, Form, Input } from "@components/index";
+import { FormContainer, Button, ErrorMessage, Form, Input } from "@components/index";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -40,7 +40,7 @@ const LoginPage: React.FC = () => {
   }, []);
 
   return (
-    <AuthContainer icon={<HiUser />}>
+    <FormContainer icon={<HiUser />}>
       <Form onSubmit={handleSubmit(onSubmit)} title="Entrar">
         <>
           <Input
@@ -68,7 +68,7 @@ const LoginPage: React.FC = () => {
           </Link>
         </>
       </Form>
-    </AuthContainer>
+    </FormContainer>
   );
 };
 
