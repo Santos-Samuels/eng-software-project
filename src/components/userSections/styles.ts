@@ -71,3 +71,10 @@ export const StyledActions = styled.div`
     flex-direction: row;
   }
 `;
+
+export const StyledDiv = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+`;

@@ -1,10 +1,11 @@
-import { Button, Input, Collapsible } from "@src/components";
+import { Button, Input, Collapsible, CustomMessage } from "@src/components";
+import { UserContext } from "@src/context/userContext";
 import { formatImageToPreview } from "@src/shared/utils/formatImageToPreview";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { IoStorefront } from "react-icons/io5";
-import { StyledActions, StyledAvatar, StyledSection } from "../styles";
+import { StyledActions, StyledAvatar, StyledSection, StyledDiv } from "../styles";
 
 const StoreSection: React.FC = () => {
   const {
@@ -16,7 +17,18 @@ const StoreSection: React.FC = () => {
   const [previewImage, setPreviewImage] = useState<Blob | MediaSource | null>(
     null
   );
-  
+  const { store } = useContext(UserContext);
+
+  if (!store)
+    return (
+      <Collapsible title="Loja" icon={<IoStorefront />}>
+        <StyledDiv>
+          <CustomMessage message="Ops! Parece que você ainda não criou sua loja." />
+          <Button feature="FILL">Criar uma loja</Button>
+        </StyledDiv>
+      </Collapsible>
+    );
+
   return (
     <Collapsible title="Loja" icon={<IoStorefront />}>
       <StyledSection>

@@ -11,6 +11,7 @@ export const StyledArticle = styled.article`
   box-shadow: 0px 4px 9px 0 rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 16px;
+  cursor: pointer;
 
   & img {
     border-radius: 10px;

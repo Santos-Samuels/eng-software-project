@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface IUserContext {
   user?: IUser;
+  store?: Object;
   getUserById: (userId: string) => Promise<void>
 }
 
@@ -10,6 +11,7 @@ export const UserContext = React.createContext({} as IUserContext);
 
 export const UserProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<IUser>();
+  const [store, setStore] = useState(undefined);
 
   const getUserById = async (userId: string) => {
     const response = await showUser(userId);
@@ -20,6 +22,7 @@ export const UserProvider: React.FC<{ children?: React.ReactNode }> = ({ childre
     <UserContext.Provider
       value={{
         user,
+        store,
         getUserById
       }}
     >

@@ -50,18 +50,7 @@ const ProductForm: React.FC = () => {
     // }
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    // register("file", { required: "Adicione uma Imagem!" });
-    // register("title", { required: "Informe o Título!" });
-    // register("price", { required: "Informe o Preço!" });
-    // register("promotionalPrice", { required: false });
-    // register("stock", { required: "Confirme a Quantidade!" });
-    // register("description", { required: "Informe uma Descrição!" });
-    // register("category", { required: "Confirme a Categoria!" });
-    // register("type", { required: "Confirme o Tipo!" });
-  }, []);
-
+  
   return (
     <StyledDiv>
       <StyledSection>
