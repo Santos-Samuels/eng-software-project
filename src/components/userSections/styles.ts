@@ -6,6 +6,7 @@ export const StyledSection = styled.section`
   align-items: flex-start;
   gap: 20px;
 
+  & > form,
   & > div {
     display: flex;
     flex-direction: column;
@@ -14,6 +15,7 @@ export const StyledSection = styled.section`
     font-size: 18px;
   }
 
+  & form img,
   & div img {
     height: 100px;
     width: 100px;
@@ -21,6 +23,7 @@ export const StyledSection = styled.section`
     border-radius: 100%;
   }
 
+  & form article,
   & div article {
     display: flex;
     align-items: center;
@@ -28,10 +31,12 @@ export const StyledSection = styled.section`
     font-size: 18px;
   }
 
+  & form article button,
   & div article button {
     width: 100px;
   }
 
+  & form p,
   & div p {
     word-wrap: nowrap;
     color: ${({ theme }) => theme.textColor};
@@ -47,9 +52,11 @@ export const StyledAvatar = styled.div`
   height: 100px;
   width: 100px;
   border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & svg {
-    margin: auto;
     font-size: 50px;
   }
 `;

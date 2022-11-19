@@ -20,11 +20,12 @@ const RegisterPage: React.FC = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<IRegisterForm>();
+  const file = watch("file")
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [previewImage, setPreviewImage] = useState<Blob | MediaSource | null>(null);
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IRegisterForm> = async (data) => {
@@ -53,7 +54,7 @@ const RegisterPage: React.FC = () => {
   return (
     <FormContainer
       icon={<HiUserPlus />}
-      imageUrl={previewImage ? formatImageToPreview(previewImage) : ""}
+      imageUrl={file ? formatImageToPreview(file) : ""}
     >
       <Form onSubmit={handleSubmit(onSubmit)} title="Cadastrar">
         <Input
@@ -63,9 +64,6 @@ const RegisterPage: React.FC = () => {
           label="Enviar Foto do Perfil"
           accept="image/*"
           formRegister={register("file", { required: false })}
-          onChange={async (e) => {
-            setPreviewImage(e.target.files![0]);
-          }}
           isError={errors.file && true}
           errorMessage={errors.email?.message}
         />

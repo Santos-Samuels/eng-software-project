@@ -1,4 +1,14 @@
-import { AccountPage, CartPage, HomePage, LoginPage, NotFoundPage, ProductPage, ProductsPage, RegisterPage, CreateProductPage } from "@src/pages";
+import {
+  AccountPage,
+  CartPage,
+  HomePage,
+  LoginPage,
+  NotFoundPage,
+  ProductPage,
+  ProductsPage,
+  RegisterPage,
+  CreateProductPage,
+} from "@src/pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import PrivateRoutes from "./private.routes";
 
@@ -15,7 +25,7 @@ const AppRoutes: React.FC = () => {
 
         <Route element={<PrivateRoutes />}>
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/create-product" element={<CreateProductPage />} />
+          <Route path="/add-product" element={<CreateProductPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

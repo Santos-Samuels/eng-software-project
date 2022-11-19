@@ -5,39 +5,123 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { IoStorefront } from "react-icons/io5";
-import { StyledActions, StyledAvatar, StyledSection, StyledDiv } from "../styles";
+import {
+  StyledActions,
+  StyledAvatar,
+  StyledSection,
+  StyledDiv,
+} from "../styles";
+
+const intitialFormMode: IFormMode = {
+  type: "EDIT-INFO",
+  isActive: false,
+};
 
 const StoreSection: React.FC = () => {
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<IRegisterForm>();
-  const [previewImage, setPreviewImage] = useState<Blob | MediaSource | null>(
-    null
-  );
+  const file = watch("file");
   const { store } = useContext(UserContext);
+  const [isFormMode, setIsFormMode] = useState<IFormMode>(intitialFormMode);
 
-  if (!store)
+  if (!store && !isFormMode.isActive)
     return (
       <Collapsible title="Loja" icon={<IoStorefront />}>
         <StyledDiv>
           <CustomMessage message="Ops! Parece que você ainda não criou sua loja." />
-          <Button feature="FILL">Criar uma loja</Button>
+          <Button
+            feature="FILL"
+            onClick={() =>
+              setIsFormMode({ type: "CREATE-INFO", isActive: true })
+            }
+          >
+            Criar uma loja
+          </Button>
         </StyledDiv>
+      </Collapsible>
+    );
+
+  if (isFormMode.isActive)
+    return (
+      <Collapsible title="Loja" icon={<IoStorefront />}>
+        <StyledSection>
+          {file ? (
+            <div>
+              <img src={formatImageToPreview(file)} alt="Imagem de perfil" />
+            </div>
+          ) : (
+            <div>
+              {false ? (
+                <img src={""} />
+              ) : (
+                <StyledAvatar>
+                  <IoStorefront />
+                </StyledAvatar>
+              )}
+            </div>
+          )}
+
+          <form>
+            <Input
+              type="file"
+              id="file"
+              icon={<FiUpload />}
+              label="Trocar Foto do Perfil"
+              accept="image/*"
+              formRegister={register("file", { required: false })}
+              isError={errors.file && true}
+              errorMessage={errors.email?.message}
+            />
+
+            <Input
+              type="text"
+              id="name"
+              placeholder="Nome da Loja"
+              defaultValue="Fake Store Name"
+              formRegister={register("name", {
+                required: "Informe o Nome",
+              })}
+              isError={errors.name && true}
+              errorMessage={errors.name?.message}
+            />
+
+            <Input
+              type="text"
+              id="description"
+              placeholder="Descrição"
+              defaultValue=""
+              formRegister={register("name", {
+                required: false,
+              })}
+              isError={errors.name && true}
+              errorMessage={errors.name?.message}
+            />
+          </form>
+        </StyledSection>
+
+        <StyledActions>
+          <Button type="submit">Salvar</Button>
+          <Button
+            feature="LINK"
+            onClick={() => setIsFormMode(intitialFormMode)}
+          >
+            <b>CANCELAR</b>
+          </Button>
+        </StyledActions>
       </Collapsible>
     );
 
   return (
     <Collapsible title="Loja" icon={<IoStorefront />}>
       <StyledSection>
-        {previewImage ? (
+        {file ? (
           <div>
-            <img
-              src={formatImageToPreview(previewImage)}
-              alt="Imagem de perfil"
-            />
+            <img src={formatImageToPreview(file)} alt="Imagem de perfil" />
           </div>
         ) : (
           <div>
@@ -52,18 +136,6 @@ const StoreSection: React.FC = () => {
         )}
 
         <div>
-          <Input
-            type="file"
-            id="file"
-            icon={<FiUpload />}
-            label="Trocar Foto do Perfil"
-            accept="image/*"
-            formRegister={register("file", { required: false })}
-            onChange={async (e) => setPreviewImage(e.target.files![0])}
-            // isError={errors.file && true}
-            // errorMessage={errors.email?.message}
-          />
-
           <article>
             <p>Nome:</p>
             <b>Fake Store Name</b>
@@ -92,7 +164,11 @@ const StoreSection: React.FC = () => {
       </StyledSection>
 
       <StyledActions>
-        <Button>Editar</Button>
+        <Button
+          onClick={() => setIsFormMode({ type: "EDIT-INFO", isActive: true })}
+        >
+          Editar
+        </Button>
         <Button feature="LINK">
           <b>DELETAR</b>LOJA
         </Button>
