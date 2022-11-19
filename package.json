@@ -45,7 +45,7 @@
     "prompts": "^2.4.2",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
-    "react-collapsed": "^3.5.0",
+    "react-collapse": "^5.1.1",
     "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.37.0",
@@ -150,6 +150,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-collapse": "^5.0.1",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^8.3.4"
   }
