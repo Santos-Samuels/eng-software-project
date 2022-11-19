@@ -28,10 +28,8 @@ const ProductForm: React.FC = () => {
   } = useForm<IProductForm>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [previewImage, setPreviewImage] = useState<Blob | MediaSource | null>(
-    null
-  );
   const navigate = useNavigate();
+  const file = watch("file")
 
   const onSubmit: SubmitHandler<IProductForm> = async (data) => {
     console.log(data);
@@ -54,9 +52,9 @@ const ProductForm: React.FC = () => {
   return (
     <StyledDiv>
       <StyledSection>
-        {previewImage ? (
+        {file ? (
           <img
-            src={formatImageToPreview(previewImage)}
+            src={formatImageToPreview(file)}
             alt="Imagem de perfil"
           />
         ) : (
@@ -74,9 +72,6 @@ const ProductForm: React.FC = () => {
             formRegister={register("file", {
               required: "Adicione uma Imagem!",
             })}
-            onChange={async (e) => {
-              setPreviewImage(e.target.files![0]);
-            }}
             isError={errors.file && true}
             errorMessage={errors.file?.message}
           />
@@ -149,7 +144,7 @@ const ProductForm: React.FC = () => {
       <div>
         <h2>Preview do Produto</h2>
         <ProductCard
-          image={previewImage ? formatImageToPreview(previewImage) : ""}
+          image={file ? formatImageToPreview(file) : ""}
           title={watch("title") ? watch("title") : "Informe um Título" }
           price={watch("price") ? Number(watch("price")) : 0}
           promotionalPrice={watch("promotionalPrice") ? Number(watch("promotionalPrice")) : undefined}

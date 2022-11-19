@@ -1,4 +1,4 @@
-export const formatImageToPreview = (file: Blob | MediaSource) => {
-  const objectUrl = URL.createObjectURL(file)
-  return objectUrl
-}
+export const formatImageToPreview = (file: FileList) => {
+  const objectUrl = URL.createObjectURL(file[0]);
+  return objectUrl;
+};

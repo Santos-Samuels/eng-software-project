@@ -14,9 +14,10 @@ interface ILoginForm {
 };
 
 interface IRegisterForm {
-  file: File | FormData;
+  file: FileList;
   name: string;
   password: string;
+  newPassword: string;
   confirmPassword: string;
   email: string;
 };

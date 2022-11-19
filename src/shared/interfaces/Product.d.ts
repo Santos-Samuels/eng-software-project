@@ -1,5 +1,5 @@
 interface IProductForm {
-  file?: File | FormData;
+  file?: FileList;
   title: string;
   price: number;
   promotionalPrice: number;
