@@ -14,21 +14,15 @@ const Collapsible: React.FC<IProps> = ({ children, title, icon, ...rest }) => {
   const { getCollapseProps } = useCollapse({ isExpanded });
 
   return (
-    <StyledArticle
-      {...rest}
-      isExpanded={isExpanded}
-      onClick={() => setIsExpanded(!isExpanded)}
-    >
-      <div>
+    <StyledArticle {...rest} isExpanded={isExpanded}>
+      <div onClick={() => setIsExpanded(!isExpanded)}>
         <span>
           {icon}
           {title}
         </span>
         <HiOutlineChevronDown size={25} />
       </div>
-      <section {...getCollapseProps()}>
-        {children}
-      </section>
+      <section {...getCollapseProps()}>{children}</section>
     </StyledArticle>
   );
 };
