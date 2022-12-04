@@ -1,13 +1,16 @@
-import { Button, Input, Collapsible } from "@src/components";
-import { registerUser } from "@src/shared/services";
+import { Button, Input, Collapsible, ErrorMessage } from "@src/components";
+import { UserContext } from "@src/context/userContext";
+import { deleteUser, registerUser, updateUser } from "@src/shared/services";
 import { getAvatar } from "@src/shared/services/user/getAvatar";
 import { formatImageToPreview } from "@src/shared/utils/formatImageToPreview";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { HiMail } from "react-icons/hi";
 import { HiUser } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { StyledActions, StyledAvatar, StyledSection } from "../styles";
 
 const intitialFormMode: IFormMode = {
@@ -29,25 +32,52 @@ const ProfileSection: React.FC<IUserSection> = ({
     formState: { errors },
   } = useForm<IEditUser>();
   const file = watch("file");
+  const { getUserById } = useContext(UserContext);
   const [isFormMode, setIsFormMode] = useState<IFormMode>(intitialFormMode);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigate = useNavigate();
 
-  const onEditInfo: SubmitHandler<IEditUser> = async (data) => {
-    /*setIsLoading(true);
+  const resetErros = () => {
+    setErrorMessage("")
+    reset()
+    setIsFormMode(intitialFormMode)
+  }
+
+  const updateUserHandler: SubmitHandler<IEditUser> = async (data) => {
+    setIsLoading(true);
     setErrorMessage("");
 
     try {
       const formData = new FormData();
-      Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
+      formData.append("name", data.name);
 
-      await registerUser(formData);
+      await updateUser(data, id);
       reset();
-      navigate("/login");
+      await getUserById(id);
+      setIsFormMode(intitialFormMode);
+      toast.success("Usuário Editado com Sucesso");
     } catch (error) {
-      setErrorMessage("Já existe um usuário com esse email!");
+      setErrorMessage("Erro ao editar a usuário!");
+      toast.error("Erro ao Editar o Usuário!");
     }
-    setIsLoading(false);*/
+    setIsLoading(false);
+  };
+
+  const deleteUserHandler = async () => {
+    setIsLoading(true);
+
+    try {
+      await deleteUser(id);
+      localStorage.removeItem("userId")
+      localStorage.removeItem("TOKEN")
+      navigate("/");
+      toast.success("Usuário Deletado com Sucesso");
+    } catch (error) {
+      setErrorMessage("Erro ao deletar a usuário!");
+      toast.error("Erro ao Deletar o Usuário!");
+    }
+    setIsLoading(false);
   };
 
   if (isFormMode.isActive && isFormMode.type === "EDIT-INFO")
@@ -70,7 +100,7 @@ const ProfileSection: React.FC<IUserSection> = ({
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onEditInfo)}>
+          <form>
             <Input
               type="file"
               id="file"
@@ -87,20 +117,31 @@ const ProfileSection: React.FC<IUserSection> = ({
               id="name"
               placeholder="Nome Completo"
               icon={<HiUser />}
+              defaultValue={name}
               formRegister={register("name", {
                 required: "Informe o Nome Completo!",
               })}
               isError={errors.name && true}
               errorMessage={errors.name?.message}
             />
+
+            {errorMessage && (
+              <ErrorMessage withBackgroung message={errorMessage} />
+            )}
           </form>
         </StyledSection>
 
         <StyledActions>
-          <Button>Salvar</Button>
+          <Button
+            type="submit"
+            isLoad={isLoading}
+            onClick={handleSubmit(updateUserHandler)}
+          >
+            Salvar
+          </Button>
           <Button
             feature="LINK"
-            onClick={() => setIsFormMode(intitialFormMode)}
+            onClick={resetErros}
           >
             <b>CANCELAR</b>
           </Button>
@@ -149,6 +190,10 @@ const ProfileSection: React.FC<IUserSection> = ({
               isError={errors.password && true}
               errorMessage={errors.password?.message}
             />
+
+            {errorMessage && (
+              <ErrorMessage withBackgroung message={errorMessage} />
+            )}
           </form>
         </StyledSection>
 
@@ -156,7 +201,7 @@ const ProfileSection: React.FC<IUserSection> = ({
           <Button>Salvar</Button>
           <Button
             feature="LINK"
-            onClick={() => setIsFormMode(intitialFormMode)}
+            onClick={resetErros}
           >
             <b>CANCELAR</b>
           </Button>
@@ -169,10 +214,7 @@ const ProfileSection: React.FC<IUserSection> = ({
       <StyledSection>
         {avatar ? (
           <div>
-            <img
-              src={avatar}
-              alt="Imagem de perfil"
-            />
+            <img src={avatar} alt="Imagem de perfil" />
           </div>
         ) : (
           <div>
@@ -219,7 +261,7 @@ const ProfileSection: React.FC<IUserSection> = ({
         >
           Editar
         </Button>
-        <Button feature="LINK">
+        <Button feature="LINK" onClick={deleteUserHandler} isLoad={isLoading}>
           <b>DELETAR</b>CONTA
         </Button>
       </StyledActions>

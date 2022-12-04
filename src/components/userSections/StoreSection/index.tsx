@@ -40,6 +40,12 @@ const StoreSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  const resetErros = () => {
+    setErrorMessage("")
+    reset()
+    setIsFormMode(intitialFormMode)
+  }
+
   const createStoreHandler: SubmitHandler<IStoreForm> = async (data) => {
     setIsLoading(true);
     setErrorMessage("");
@@ -193,7 +199,7 @@ const StoreSection: React.FC = () => {
           </Button>
           <Button
             feature="LINK"
-            onClick={() => setIsFormMode(intitialFormMode)}
+            onClick={resetErros}
           >
             <b>CANCELAR</b>
           </Button>
