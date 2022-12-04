@@ -40,7 +40,14 @@ const RegisterPage: React.FC = () => {
 
     try {
       const formData = new FormData();
-      Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
+      //Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
+      Object.entries(data).forEach((el) => {
+        if(el[0] === "file") {
+          formData.append(el[0], data.file[0])
+          return
+        }
+        formData.append(el[0], el[1])
+      });
 
       await registerUser(formData);
       reset();
@@ -65,7 +72,7 @@ const RegisterPage: React.FC = () => {
           accept="image/*"
           formRegister={register("file", { required: false })}
           isError={errors.file && true}
-          errorMessage={errors.email?.message}
+          errorMessage={errors.file?.message}
         />
         <Input
           type="text"

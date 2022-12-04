@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://clear-worm-polo-shirt.cyclic.app/api'
+  //baseURL: 'https://clear-worm-polo-shirt.cyclic.app/api'
+  baseURL: 'http://localhost:3000/api'
 })
 
 api.interceptors.request.use(config => {

@@ -1,4 +1,4 @@
-import { StoreSection, ProfileSection} from "@src/components";
+import { StoreSection, ProfileSection } from "@src/components";
 import PageLoading from "@src/components/layout/PageLoading";
 import { UserContext } from "@src/context/userContext";
 import { useContext, useEffect, useState } from "react";
@@ -22,7 +22,12 @@ const AccountPage: React.FC = () => {
 
   return (
     <>
-      <ProfileSection id={"sads"} name={"Fake User Name"} email={"email@email.com"} password={""} />
+      <ProfileSection
+        id={user!.id}
+        name={user!.name}
+        email={user!.email}
+        avatar={user!.avatar}
+      />
       <StoreSection />
     </>
   );

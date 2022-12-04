@@ -1,8 +1,16 @@
-import { Button, Input, Collapsible, CustomMessage } from "@src/components";
+import {
+  Button,
+  Input,
+  Collapsible,
+  CustomMessage,
+  ErrorMessage,
+} from "@src/components";
 import { UserContext } from "@src/context/userContext";
+import { deleteStore, updateStore } from "@src/shared/services";
+import { createStore } from "@src/shared/services/store/createStore";
 import { formatImageToPreview } from "@src/shared/utils/formatImageToPreview";
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useContext, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { IoStorefront } from "react-icons/io5";
 import {
@@ -24,10 +32,65 @@ const StoreSection: React.FC = () => {
     reset,
     watch,
     formState: { errors },
-  } = useForm<IRegisterForm>();
+  } = useForm<IStoreForm>();
   const file = watch("file");
-  const { store } = useContext(UserContext);
+  const { store, user, getUserStore, setStore } = useContext(UserContext);
   const [isFormMode, setIsFormMode] = useState<IFormMode>(intitialFormMode);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const createStoreHandler: SubmitHandler<IStoreForm> = async (data) => {
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+
+      await createStore(data, user!.id);
+      reset();
+      await getUserStore(user!.id);
+      setIsFormMode(intitialFormMode);
+    } catch (error) {
+      setErrorMessage("Erro ao criar a loja!");
+    }
+    setIsLoading(false);
+  };
+
+  const updateStoreHandler: SubmitHandler<IStoreForm> = async (data) => {
+    setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+
+      await updateStore(data, user!.id, store!.id);
+      reset();
+      await getUserStore(user!.id);
+      setIsFormMode(intitialFormMode);
+    } catch (error) {
+      setErrorMessage("Erro ao editar a loja!");
+    }
+    setIsLoading(false);
+  };
+
+  const deleteStoreHandler = async () => {
+    setIsLoading(true);
+
+    try {
+      await deleteStore(user!.id, store!.id);
+      setStore(undefined);
+      setIsFormMode(intitialFormMode);
+    } catch (error) {
+      setErrorMessage("Erro ao deletar a loja!");
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getUserStore(user!.id);
+  }, []);
 
   if (!store && !isFormMode.isActive)
     return (
@@ -50,7 +113,7 @@ const StoreSection: React.FC = () => {
     return (
       <Collapsible title="Loja" icon={<IoStorefront />}>
         <StyledSection>
-          {file ? (
+          {file && file.length !== 0 ? (
             <div>
               <img src={formatImageToPreview(file)} alt="Imagem de perfil" />
             </div>
@@ -73,39 +136,42 @@ const StoreSection: React.FC = () => {
               icon={<FiUpload />}
               label="Trocar Foto do Perfil"
               accept="image/*"
-              formRegister={register("file", { required: false })}
+              formRegister={register("file", {
+                required: false,
+              })}
               isError={errors.file && true}
-              errorMessage={errors.email?.message}
+              errorMessage={errors.file?.message}
             />
 
             <Input
               type="text"
               id="name"
               placeholder="Nome da Loja"
-              defaultValue="Fake Store Name"
               formRegister={register("name", {
                 required: "Informe o Nome",
               })}
+              defaultValue={store ? store.name : ""}
               isError={errors.name && true}
               errorMessage={errors.name?.message}
             />
 
-            <Input
-              type="text"
-              id="description"
-              placeholder="Descrição"
-              defaultValue=""
-              formRegister={register("name", {
-                required: false,
-              })}
-              isError={errors.name && true}
-              errorMessage={errors.name?.message}
-            />
+            {errorMessage && (
+              <ErrorMessage withBackgroung message={errorMessage} />
+            )}
           </form>
         </StyledSection>
 
         <StyledActions>
-          <Button type="submit">Salvar</Button>
+          <Button
+            onClick={
+              isFormMode.type === "CREATE-INFO"
+                ? handleSubmit(createStoreHandler)
+                : handleSubmit(updateStoreHandler)
+            }
+            isLoad={isLoading}
+          >
+            Salvar
+          </Button>
           <Button
             feature="LINK"
             onClick={() => setIsFormMode(intitialFormMode)}
@@ -119,47 +185,41 @@ const StoreSection: React.FC = () => {
   return (
     <Collapsible title="Loja" icon={<IoStorefront />}>
       <StyledSection>
-        {file ? (
-          <div>
-            <img src={formatImageToPreview(file)} alt="Imagem de perfil" />
-          </div>
-        ) : (
-          <div>
-            {false ? (
-              <img src={""} />
-            ) : (
-              <StyledAvatar>
-                <IoStorefront />
-              </StyledAvatar>
-            )}
-          </div>
-        )}
+        <div>
+          {store?.imageURL ? (
+            <img src={store.imageURL} />
+          ) : (
+            <StyledAvatar>
+              <IoStorefront />
+            </StyledAvatar>
+          )}
+        </div>
 
         <div>
           <article>
             <p>Nome:</p>
-            <b>Fake Store Name</b>
+            <b>{store?.name}</b>
           </article>
 
           <article>
             <p>Produtos:</p>
-            <b>154</b>
+            <b>{store?.products.length}</b>
           </article>
 
           <article>
             <p>Avaliações:</p>
-            <b>99</b>
+            <b>{store?.amountRates}</b>
           </article>
 
           <article>
             <p>Vendas:</p>
-            <b>47</b>
+            <b>{store?.amountSold}</b>
           </article>
 
-          <article>
+          {/* <article>
             <p>Criada em:</p>
             <b>12/11/2022</b>
-          </article>
+          </article> */}
         </div>
       </StyledSection>
 
@@ -169,7 +229,7 @@ const StoreSection: React.FC = () => {
         >
           Editar
         </Button>
-        <Button feature="LINK">
+        <Button feature="LINK" onClick={deleteStoreHandler} isLoad={isLoading}>
           <b>DELETAR</b>LOJA
         </Button>
       </StyledActions>

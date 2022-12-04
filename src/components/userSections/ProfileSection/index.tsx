@@ -1,7 +1,9 @@
 import { Button, Input, Collapsible } from "@src/components";
+import { registerUser } from "@src/shared/services";
+import { getAvatar } from "@src/shared/services/user/getAvatar";
 import { formatImageToPreview } from "@src/shared/utils/formatImageToPreview";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { HiMail } from "react-icons/hi";
@@ -13,27 +15,48 @@ const intitialFormMode: IFormMode = {
   isActive: false,
 };
 
-const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
+const ProfileSection: React.FC<IUserSection> = ({
+  avatar,
+  name,
+  email,
+  id,
+}) => {
   const {
     register,
     handleSubmit,
     reset,
     watch,
     formState: { errors },
-  } = useForm<IRegisterForm>();
-  const file = watch("file")
+  } = useForm<IEditUser>();
+  const file = watch("file");
   const [isFormMode, setIsFormMode] = useState<IFormMode>(intitialFormMode);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const onEditInfo: SubmitHandler<IEditUser> = async (data) => {
+    /*setIsLoading(true);
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach((el) => formData.append(el[0], el[1]));
+
+      await registerUser(formData);
+      reset();
+      navigate("/login");
+    } catch (error) {
+      setErrorMessage("Já existe um usuário com esse email!");
+    }
+    setIsLoading(false);*/
+  };
 
   if (isFormMode.isActive && isFormMode.type === "EDIT-INFO")
     return (
       <Collapsible title="Perfil" icon={<HiUser />}>
         <StyledSection>
-          {file ? (
+          {file && file.length !== 0 ? (
             <div>
-              <img
-                src={formatImageToPreview(file)}
-                alt="Imagem de perfil"
-              />
+              <img src={formatImageToPreview(file)} alt="Imagem de perfil" />
             </div>
           ) : (
             <div>
@@ -47,7 +70,7 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
             </div>
           )}
 
-          <form>
+          <form onSubmit={handleSubmit(onEditInfo)}>
             <Input
               type="file"
               id="file"
@@ -56,7 +79,7 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
               accept="image/*"
               formRegister={register("file", { required: false })}
               isError={errors.file && true}
-              errorMessage={errors.email?.message}
+              errorMessage={errors.file?.message}
             />
 
             <Input
@@ -69,15 +92,6 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
               })}
               isError={errors.name && true}
               errorMessage={errors.name?.message}
-            />
-            <Input
-              type="email"
-              id="email"
-              placeholder="E-mail"
-              icon={<HiMail size={20} />}
-              formRegister={register("email", { required: "Informe o Email!" })}
-              isError={errors.email && true}
-              errorMessage={errors.email?.message}
             />
           </form>
         </StyledSection>
@@ -120,8 +134,8 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
               formRegister={register("newPassword", {
                 required: "Informe a Nova Senha!",
               })}
-              isError={errors.email && true}
-              errorMessage={errors.email?.message}
+              isError={errors.newPassword && true}
+              errorMessage={errors.newPassword?.message}
             />
             <Input
               type="password"
@@ -132,8 +146,8 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
               formRegister={register("confirmPassword", {
                 required: "Confirme a Nova Senha!",
               })}
-              isError={errors.email && true}
-              errorMessage={errors.email?.message}
+              isError={errors.password && true}
+              errorMessage={errors.password?.message}
             />
           </form>
         </StyledSection>
@@ -153,22 +167,18 @@ const ProfileSection: React.FC<IUser> = ({ avatar, name, email, id }) => {
   return (
     <Collapsible title="Perfil" icon={<HiUser />}>
       <StyledSection>
-        {file ? (
+        {avatar ? (
           <div>
             <img
-              src={formatImageToPreview(file)}
+              src={avatar}
               alt="Imagem de perfil"
             />
           </div>
         ) : (
           <div>
-            {avatar ? (
-              <img src={avatar} />
-            ) : (
-              <StyledAvatar>
-                <HiUser />
-              </StyledAvatar>
-            )}
+            <StyledAvatar>
+              <HiUser />
+            </StyledAvatar>
           </div>
         )}
 
