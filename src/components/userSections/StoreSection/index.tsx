@@ -13,6 +13,7 @@ import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 import { IoStorefront } from "react-icons/io5";
+import { toast, ToastContainer } from "react-toastify";
 import {
   StyledActions,
   StyledAvatar,
@@ -51,8 +52,10 @@ const StoreSection: React.FC = () => {
       reset();
       await getUserStore(user!.id);
       setIsFormMode(intitialFormMode);
+      toast.success("Loja Criada com Sucesso");
     } catch (error) {
       setErrorMessage("Erro ao criar a loja!");
+      toast.error("Erro ao Criar a Loja!");
     }
     setIsLoading(false);
   };
@@ -69,8 +72,10 @@ const StoreSection: React.FC = () => {
       reset();
       await getUserStore(user!.id);
       setIsFormMode(intitialFormMode);
+      toast.success("Loja Editada com Sucesso");
     } catch (error) {
       setErrorMessage("Erro ao editar a loja!");
+      toast.error("Erro ao Editar a Loja!");
     }
     setIsLoading(false);
   };
@@ -82,8 +87,10 @@ const StoreSection: React.FC = () => {
       await deleteStore(user!.id, store!.id);
       setStore(undefined);
       setIsFormMode(intitialFormMode);
+      toast.success("Loja Deletada com Sucesso");
     } catch (error) {
       setErrorMessage("Erro ao deletar a loja!");
+      toast.error("Erro ao Deletar a Loja!");
     }
     setIsLoading(false);
   };
@@ -112,6 +119,18 @@ const StoreSection: React.FC = () => {
   if (isFormMode.isActive)
     return (
       <Collapsible title="Loja" icon={<IoStorefront />}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <StyledSection>
           {file && file.length !== 0 ? (
             <div>
